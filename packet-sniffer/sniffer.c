@@ -200,7 +200,7 @@ void print_icmp(const struct icmphdr *icmp) {
       type = "Address Mask Reply";
       break;
     default:
-      type = "Must've missed this one. Lol.";
+      type = "Unknown";
       break;
   }
 
@@ -215,48 +215,70 @@ void print_icmp6(const struct icmp6hdr *icmp6) {
   char *type;
 
   // https://github.com/torvalds/linux/blob/master/include/uapi/linux/icmpv6.h
+  // https://github.com/mrash/psad/blob/master/icmp6_types
   switch (icmp6->icmp6_type) {
-    case ICMP_ECHOREPLY:
-      type = "Echo Reply";
-      break;
-    case ICMP_DEST_UNREACH:
-      type = "Destination Unreachable";
-      break;
-    case ICMP_SOURCE_QUENCH:
-      type = "Source Quench";
-      break;
-    case ICMP_REDIRECT:
-      type = "Redirect (change route)";
-      break;
-    case ICMP_ECHO:
+    case ICMPV6_ECHO_REQUEST:
       type = "Echo Request";
       break;
-    case ICMP_TIME_EXCEEDED:
+    case ICMPV6_ECHO_REPLY:
+      type = "Echo Reply";
+      break;
+    case ICMPV6_DEST_UNREACH:
+      type = "Destination Unreachable";
+      break;
+    case ICMPV6_PKT_TOOBIG:
+      type = "Packet Too Big";
+      break;
+    case ICMPV6_TIME_EXCEED:
       type = "Time Exceeded";
       break;
-    case ICMP_PARAMETERPROB:
+    case ICMPV6_PARAMPROB:
       type = "Parameter Problem";
       break;
-    case ICMP_TIMESTAMP:
-      type = "Timestamp Request";
+    case ICMPV6_MGM_QUERY:
+      type = "MGM Query";
       break;
-    case ICMP_TIMESTAMPREPLY:
-      type = "Timestamp Reply";
+    case ICMPV6_MGM_REPORT:
+      type = "MGM Report";
       break;
-    case ICMP_INFO_REQUEST:
-      type = "Information Request";
+    case ICMPV6_MGM_REDUCTION:
+      type = "MGM Reduction";
       break;
-    case ICMP_INFO_REPLY:
-      type = "Information Reply";
+    case ICMPV6_NI_QUERY:
+      type = "NI Query";
       break;
-    case ICMP_ADDRESS:
-      type = "Address Mask Request";
+    case ICMPV6_NI_REPLY:
+      type = "NI Reply";
       break;
-    case ICMP_ADDRESSREPLY:
-      type = "Address Mask Reply";
+    case ICMPV6_MLD2_REPORT:
+      type = "MLD2 Report";
+      break;
+    case ICMPV6_DHAAD_REQUEST:
+      type = "DHAAD Request";
+      break;
+    case ICMPV6_DHAAD_REPLY:
+      type = "DHAAD Reply";
+      break;
+    case ICMPV6_MOBILE_PREFIX_SOL:
+      type = "Mobile Prefix SOL";
+      break;
+    case ICMPV6_MOBILE_PREFIX_ADV:
+      type = "Mobile Prefix ADV";
+      break;
+    case 133:
+      type = "Router Solicitation";
+      break;
+    case 134:
+      type = "Router Advertisement";
+      break;
+    case 135:
+      type = "Neighbour Solicitation";
+      break;
+    case 136:
+      type = "Neighbour Advertisement";
       break;
     default:
-      type = "Must've missed this one. Lol.";
+      type = "Unknown";
       break;
   }
 
@@ -382,8 +404,7 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *pa
   }
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   if (argc < 2) {
     fprintf(stderr, "Must have an argument, either a file name or '-'\n");
     return -1;
