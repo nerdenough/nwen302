@@ -1,0 +1,9 @@
+#!/bin/bash
+gcc -Wall -o ./bin/sniffer sniffer.c -l pcap
+
+for file in test/*.pcap; do
+  printf "\n\n"
+  echo "File: $file"
+
+  ./bin/sniffer $file
+done

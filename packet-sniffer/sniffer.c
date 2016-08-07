@@ -288,7 +288,6 @@ void print_icmp6(const struct icmp6hdr *icmp6) {
 void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet) {
   static int count = 1;
 
-  struct ethhdr *ethernet;
   struct iphdr *ip;
   struct ipv6hdr *ipv6;
   struct in_addr src, dst;
@@ -299,8 +298,7 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *pa
 
   char srcv6[INET6_ADDRSTRLEN];
   char dstv6[INET6_ADDRSTRLEN];
-  char *payload;
-  int size_tcp, size_udp;
+  u_char *payload;
   int size_payload;
 
   // Print packet number
@@ -308,7 +306,6 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *pa
   printf("\nPacket #: %d\n", count);
   count++;
 
-  ethernet = (struct ethhdr*)(packet);
   ip = (struct iphdr*)(packet + ETH_HLEN);
   ipv6 = (struct ipv6hdr*)(packet + ETH_HLEN);
 
