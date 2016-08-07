@@ -323,9 +323,6 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *pa
     printf("Source: %s\n", inet_ntoa(src));
     printf("Destination: %s\n", inet_ntoa(dst));
 
-    size_payload = header->len;
-    printf("Size Payload: %d\n", size_payload);
-
     // Determine packet protocol
     switch (ip->protocol) {
       case IPPROTO_IP:
